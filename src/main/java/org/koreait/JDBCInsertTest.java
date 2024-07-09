@@ -1,12 +1,15 @@
 package org.koreait;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JDBCInsertTest {
     public static void main(String[] args) {
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
+
+
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             String url = "jdbc:mariadb://127.0.0.1:3306/AM_JDBC_2024_07?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
@@ -20,6 +23,7 @@ public class JDBCInsertTest {
             sql += "`body` = CONCAT('내용', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));";
 
             System.out.println(sql);
+
 
             pstmt = conn.prepareStatement(sql);
 
@@ -43,9 +47,12 @@ public class JDBCInsertTest {
                 if (pstmt != null && !pstmt.isClosed()) {
                     pstmt.close();
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
     }
 }
+

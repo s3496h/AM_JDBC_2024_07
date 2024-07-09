@@ -46,8 +46,8 @@ public class Main {
                     String sql = "INSERT INTO article ";
                     sql += "SET regDate = NOW(),";
                     sql += "updateDate = NOW(),";
-                    sql += "title = CONCAT('제목', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),";
-                    sql += "`body` = CONCAT('내용', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));";
+                    sql += "'title ='" + title + "', ";
+                    sql += "`body` = '" + body + "';";
 
                     System.out.println(sql);
 
@@ -86,6 +86,7 @@ public class Main {
                 System.out.println("   번호    /    제목     ");
                 for(Article article : articles){
                     System.out.printf("     %d      /    %s    \n", article.getId(), article.getTitle());
+
                 }
 
             }
