@@ -16,20 +16,22 @@ public class JDBCSelectTEST {
             conn = DriverManager.getConnection(url, "root", "");
             System.out.println("연결 성공!");
             String sql = "SELECT * ";
-            sql += "FROM article";
+            sql += "FROM article ";
             sql += "ORDER BY id DESC";
+
             System.out.println(sql);
+
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery(sql);
 
             List<Article> list= new ArrayList<>();
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String regDate = rs.getString("reg_date");
-                String updateDate = rs.getString("update_date");
+                String regDate = rs.getString("regDate");
+                String updateDate = rs.getString("updateDate");
                 String title = rs.getString("title");
                 String body = rs.getString("body");
-                Article article = new Article(id,title,body,regDate,updateDate);
+                Article article = new Article(id,regDate,updateDate,title,body);
                 list.add(article);
             }
             for (int i = 0 ; i < list.size() ; i++ ){
