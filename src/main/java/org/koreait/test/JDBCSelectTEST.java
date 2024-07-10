@@ -1,4 +1,6 @@
-package org.koreait;
+package org.koreait.test;
+
+import org.koreait.Article;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,17 +26,17 @@ public class JDBCSelectTEST {
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery(sql);
 
-            List<Article> list= new ArrayList<>();
+            List<Article> list = new ArrayList<>();
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String regDate = rs.getString("regDate");
                 String updateDate = rs.getString("updateDate");
                 String title = rs.getString("title");
                 String body = rs.getString("body");
-                Article article = new Article(id,regDate,updateDate,title,body);
+                Article article = new Article(id, regDate, updateDate, title, body);
                 list.add(article);
             }
-            for (int i = 0 ; i < list.size() ; i++ ){
+            for (int i = 0; i < list.size(); i++) {
                 System.out.println("번호 : " + list.get(i).getId());
                 System.out.println("작성 날짜 : " + list.get(i).getRegDate());
                 System.out.println("수정 날짜 : " + list.get(i).getUpdateDate());

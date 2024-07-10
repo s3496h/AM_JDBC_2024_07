@@ -1,8 +1,6 @@
-package org.koreait;
+package org.koreait.test;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class JDBCInsertTest {
     public static void main(String[] args) {
