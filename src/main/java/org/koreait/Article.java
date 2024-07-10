@@ -1,6 +1,5 @@
 package org.koreait;
-
-import java.time.LocalDateTime;
+import org.koreait.util.Util;
 import java.util.Map;
 
 public class Article {
@@ -44,15 +43,6 @@ public class Article {
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                '}';
     }
 
     public Article(int id, String title, String body) {
