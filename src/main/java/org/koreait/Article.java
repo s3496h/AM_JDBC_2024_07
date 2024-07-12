@@ -1,5 +1,5 @@
 package org.koreait;
-import org.koreait.util.Util;
+
 import java.util.Map;
 
 public class Article {

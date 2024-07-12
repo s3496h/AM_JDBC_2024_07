@@ -1,6 +1,6 @@
 package org.koreait.util;
 
-import org.koreait.exception.SQLErrorException;
+import org.koreait.Exception.SQLErrorException;
 
 import java.sql.*;
 import java.util.ArrayList;
