@@ -1,6 +1,6 @@
 package org.koreait.dao;
 
-import org.koreait.Article;
+import org.koreait.dto.Article;
 import org.koreait.util.DButil;
 import org.koreait.util.SecSql;
 

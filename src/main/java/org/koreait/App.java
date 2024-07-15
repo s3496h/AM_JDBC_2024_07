@@ -58,16 +58,17 @@ public class App {
     }
 
     private int Action(Connection conn, Scanner sc, String cmd) {
-        MemberController memberController = new MemberController(sc,conn);
-        ArticleController articleController = new ArticleController(sc,conn);
+        MemberController memberController = new MemberController(sc, conn);
+        ArticleController articleController = new ArticleController(sc, conn);
 
 
         if (cmd.equals("exit")) {
             return -1;
         }
-        if (cmd.equals("member join")) {
+        if (cmd.equals("member login")) {
+            memberController.login();
+        } else if (cmd.equals("member join")) {
             memberController.dojoin();
-
         } else if (cmd.equals("article write")) {
            articleController.dowrite();
         } else if (cmd.equals("article list")) {

@@ -1,12 +1,11 @@
 package org.koreait.Controller;
 
-import org.koreait.Article;
+import org.koreait.dto.Article;
 import org.koreait.service.ArticleService;
 import org.koreait.util.DButil;
 import org.koreait.util.SecSql;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;

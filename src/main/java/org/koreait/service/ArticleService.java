@@ -1,8 +1,7 @@
 package org.koreait.service;
 
-import org.koreait.Article;
+import org.koreait.dto.Article;
 import org.koreait.dao.ArticleDao;
-import org.koreait.util.SecSql;
 
 import java.sql.Connection;
 import java.util.List;

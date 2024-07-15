@@ -1,8 +1,7 @@
 package org.koreait.Controller;
 
 import org.koreait.service.MemberService;
-import org.koreait.util.DButil;
-import org.koreait.util.SecSql;
+import org.koreait.dto.Member;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -86,6 +85,63 @@ public class MemberController {
         int id = memberService.doJoin(loginId, loginPw, name);
 
         System.out.println(id + "번 회원이 생성되었습니다");
+
     }
 
+
+    public void login() {
+        String loginId = null;
+        String loginPw = null;
+
+        System.out.println("==로그인==");
+        while (true) {
+            System.out.print("로그인 아이디 : ");
+            loginId = sc.nextLine().trim();
+
+            if (loginId.length() == 0 || loginId.contains(" ")) {
+                System.out.println("아이디 똑바로 써");
+                continue;
+            }
+
+            boolean isLoindIdDup = memberService.isLoginIdDup(conn, loginId);
+
+            if (isLoindIdDup == false) {
+                System.out.println(loginId + "는(은) 없어");
+                continue;
+            }
+
+            break;
+        }
+
+        Member member = memberService.getMemberByLoginId(loginId);
+
+        int tryMaxCount = 3;
+        int tryCount = 0;
+
+        while (true) {
+            if (tryCount >= tryMaxCount) {
+                System.out.println("비번 다시 확인하고 시도해");
+                break;
+            }
+
+            System.out.print("비밀번호 : ");
+            loginPw = sc.nextLine().trim();
+
+            if (loginPw.length() == 0 || loginPw.contains(" ")) {
+                tryCount++;
+                System.out.println("비번 똑바로 입력해");
+                continue;
+            }
+            if (member.getLoginPw().equals(loginPw) == false) {
+                tryCount++;
+                System.out.println("일치하지 않아");
+                continue;
+            }
+
+            System.out.println(member.getName() + "님 환영합니다");
+            break;
+        }
+    }
 }
+
+
