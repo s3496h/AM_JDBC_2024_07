@@ -8,14 +8,16 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 public class MemberController {
-  Scanner sc;
-  Connection conn;
-   MemberService memberService ;
+    Scanner sc;
+    Connection conn;
+    private MemberService memberService;
+
     public MemberController(Scanner sc, Connection conn) {
         this.sc = sc;
         this.conn = conn;
         this.memberService = new MemberService();
     }
+
     public void dojoin() {
         String loginId = null;
         String loginPw = null;
@@ -31,7 +33,7 @@ public class MemberController {
                 continue;
             }
 
-            boolean isLoindIdDup = memberService.isLoginIdDup(conn,loginId);
+            boolean isLoindIdDup = memberService.isLoginIdDup(conn, loginId);
 
             if (isLoindIdDup) {
                 System.out.println(loginId + "는(은) 이미 사용중");
@@ -81,16 +83,7 @@ public class MemberController {
         }
 
 
-        SecSql sql = new SecSql();
-
-        sql.append("INSERT INTO `member`");
-        sql.append("SET regDate = NOW(),");
-        sql.append("updateDate = NOW(),");
-        sql.append("loginId = ?,", loginId);
-        sql.append("loginPw= ?,", loginPw);
-        sql.append("name = ?;", name);
-
-        int id = DButil.insert(conn, sql);
+        int id = memberService.doJoin(loginId, loginPw, name);
 
         System.out.println(id + "번 회원이 생성되었습니다");
     }

@@ -35,7 +35,7 @@ public class App {
             try {
                 conn = DriverManager.getConnection(url, "root", "");
 
-                int actionResult = doAction(conn, sc, cmd);
+                int actionResult = Action(conn, sc, cmd);
 
                 if (actionResult == -1) {
                     System.out.println("==프로그램 종료==");
@@ -57,9 +57,9 @@ public class App {
         }
     }
 
-    private int doAction(Connection conn, Scanner sc, String cmd) {
+    private int Action(Connection conn, Scanner sc, String cmd) {
         MemberController memberController = new MemberController(sc,conn);
-        ArticleController articleController = new ArticleController();
+        ArticleController articleController = new ArticleController(sc,conn);
 
 
         if (cmd.equals("exit")) {
@@ -69,159 +69,17 @@ public class App {
             memberController.dojoin();
 
         } else if (cmd.equals("article write")) {
-            System.out.println("==글쓰기==");
-            System.out.print("제목 : ");
-            String title = sc.nextLine();
-            System.out.print("내용 : ");
-            String body = sc.nextLine();
-
-            SecSql sql = new SecSql();
-
-            sql.append("INSERT INTO article");
-            sql.append("SET regDate = NOW(),");
-            sql.append("updateDate = NOW(),");
-            sql.append("title = ?,", title);
-            sql.append("`body`= ?;", body);
-
-
-            int id = DButil.insert(conn, sql);
-
-
-            System.out.println(id + "번 글이 생성되었습니다");
-
+           articleController.dowrite();
         } else if (cmd.equals("article list")) {
-            System.out.println("==목록==");
-
-
-            List<Article> articles = new ArrayList<>();
-
-            SecSql sql = new SecSql();
-            sql.append("SELECT *");
-            sql.append("FROM article");
-            sql.append("ORDER BY id DESC");
-
-            List<Map<String, Object>> articleListMap = DButil.selectRows(conn, sql);
-
-
-            for (Map<String, Object> articleMap : articleListMap) {
-                articles.add(new Article(articleMap));
-            }
-            if (articles.size() == 0) {
-                System.out.println("게시글이 없습니다");
-                return 0;
-            }
-
-            System.out.println("  번호  /   제목  ");
-            for (Article article : articles) {
-                System.out.printf("  %d     /   %s   \n", article.getId(), article.getTitle());
-            }
+          articleController.showlist();
         } else if (cmd.startsWith("article modify")) {
-
-            int id = 0;
-
-            try {
-                id = Integer.parseInt(cmd.split(" ")[2]);
-            } catch (Exception e) {
-                System.out.println("번호는 정수로 입력해");
-                return 0;
-            }
-            SecSql sql = new SecSql();
-            sql.append("SELECT *");
-            sql.append("FROM article");
-            sql.append("WHERE id = ?", id);
-
-            Map<String, Object> articleMap = DButil.selectRow(conn, sql);
-
-            if (articleMap.isEmpty()) {
-                System.out.println(id + "번 글은 없어");
-                return 0;
-            }
-            System.out.println("==수정==");
-            System.out.print("새 제목 : ");
-            String title = sc.nextLine().trim();
-            System.out.print("새 내용 : ");
-            String body = sc.nextLine().trim();
-
-            sql = new SecSql();
-
-            sql.append("UPDATE article");
-            sql.append("SET updateDate = NOW()");
-            if (title.length() > 0) {
-                sql.append(",title = ?", title);
-            }
-            if (body.length() > 0) {
-                sql.append(",`body` = ?", body);
-            }
-            sql.append("WHERE id = ?", id);
-            DButil.update(conn, sql);
-
-            System.out.println(id + "번 글이 수정되었습니다.");
+            articleController.domodifi(cmd);
         } else if (cmd.startsWith("article detail")) {
-
-            int id = 0;
-
-            try {
-                id = Integer.parseInt(cmd.split(" ")[2]);
-            } catch (Exception e) {
-                System.out.println("번호는 정수로 입력해");
-                return 0;
-            }
-
-            System.out.println("==상세보기==");
-
-            SecSql sql = new SecSql();
-            sql.append("SELECT *");
-            sql.append("FROM article");
-            sql.append("WHERE id = ?", id);
-
-            Map<String, Object> articleMap = DButil.selectRow(conn, sql);
-
-            if (articleMap.isEmpty()) {
-                System.out.println(id + "번 글은 없어");
-                return 0;
-            }
-
-            Article article = new Article(articleMap);
-
-            System.out.println("번호 : " + article.getId());
-            System.out.println("작성날짜 : " + article.getRegDate());
-            System.out.println("수정날짜 : " + article.getUpdateDate());
-            System.out.println("제목 : " + article.getTitle());
-            System.out.println("내용 : " + article.getBody());
+            articleController.showdetail(cmd);
         } else if (cmd.startsWith("article delete")) {
-
-            int id = 0;
-
-            try {
-                id = Integer.parseInt(cmd.split(" ")[2]);
-            } catch (Exception e) {
-                System.out.println("번호는 정수로 입력해");
-                return 0;
-            }
-
-            SecSql sql = new SecSql();
-            sql.append("SELECT *");
-            sql.append("FROM article");
-            sql.append("WHERE id = ?", id);
-
-            Map<String, Object> articleMap = DButil.selectRow(conn, sql);
-
-            if (articleMap.isEmpty()) {
-                System.out.println(id + "번 글은 없어");
-                return 0;
-            }
-
-            System.out.println("==삭제==");
-
-            sql = new SecSql();
-            sql.append("DELETE FROM article");
-            sql.append("WHERE id = ?", id);
-
-            DButil.delete(conn, sql);
-
-            System.out.println(id + "번 글이 삭제되었습니다.");
-
-
+            articleController.dodelete(cmd);
+        }else {
+            System.out.println("사용 할 수 없는 명령어");
         }
         return 0;
     }
