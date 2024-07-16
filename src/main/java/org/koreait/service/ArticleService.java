@@ -1,5 +1,6 @@
 package org.koreait.service;
 
+import org.koreait.container.Container;
 import org.koreait.dto.Article;
 import org.koreait.dao.ArticleDao;
 
@@ -8,9 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ArticleService {
+
     private ArticleDao articleDao;
-    public ArticleService(Connection conn) {
-        this.articleDao = new ArticleDao(conn);
+
+    public ArticleService articleService;
+
+    public ArticleService() {
+        this.articleDao = Container.articleDao;
     }
 
     public int dowrite(String title, String body) {

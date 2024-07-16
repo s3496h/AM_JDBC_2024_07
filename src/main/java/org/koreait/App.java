@@ -1,22 +1,24 @@
 package org.koreait;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import org.koreait.Controller.ArticleController;
 import org.koreait.Controller.MemberController;
-import org.koreait.util.DButil;
-import org.koreait.util.SecSql;
-
-import java.util.Map;
+import org.koreait.container.Container;
 
 public class App {
 
+    private Scanner sc;
+
+    public App() {
+        Container.init();
+        this.sc = Container.sc;
+    }
+
     public void run() {
         System.out.println("==프로그램 시작==");
-        Scanner sc = new Scanner(System.in);
+
 
         while (true) {
             System.out.print("명령어 > ");
@@ -35,7 +37,8 @@ public class App {
             try {
                 conn = DriverManager.getConnection(url, "root", "");
 
-                int actionResult = Action(conn, sc, cmd);
+                Container.conn = conn;
+                int actionResult = action(cmd);
 
                 if (actionResult == -1) {
                     System.out.println("==프로그램 종료==");
@@ -57,18 +60,19 @@ public class App {
         }
     }
 
-    private int Action(Connection conn, Scanner sc, String cmd) {
-        MemberController memberController = new MemberController(sc, conn);
-        ArticleController articleController = new ArticleController(sc, conn);
+    private int action(String cmd) {
+        MemberController memberController = Container.memberController;
+        ArticleController articleController = Container.articleController;
 
 
         if (cmd.equals("exit")) {
             return -1;
         }
-        if (cmd.equals("member login")) {
-            memberController.login();
-        } else if (cmd.equals("member join")) {
-            memberController.dojoin();
+        if (cmd.equals("member logout")) {
+            memberController.logout();
+        } else if (cmd.equals("member profile")) {
+            memberController.showProfile();
+        } else if (cmd.equals("member login")) {
         } else if (cmd.equals("article write")) {
            articleController.dowrite();
         } else if (cmd.equals("article list")) {

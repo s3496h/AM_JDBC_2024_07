@@ -1,5 +1,6 @@
 package org.koreait.service;
 
+import org.koreait.container.Container;
 import org.koreait.dao.MemberDao;
 
 import org.koreait.dto.Member;
@@ -10,13 +11,12 @@ public class MemberService {
     private MemberDao memberDao;
 
     public MemberService() {
-        this.memberDao = new MemberDao();
+        this.memberDao = Container.memberDao;
     }
 
-    public boolean isLoginIdDup(Connection conn, String loginId) {
+    public boolean isLoginIdDup(String loginId) {
 
-
-        return MemberDao.isLoginIdDup(conn, loginId);
+        return memberDao.isLoginIdDup(loginId);
     }
 
     public int doJoin(String loginId, String loginPw, String name) {

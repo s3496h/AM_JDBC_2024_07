@@ -1,32 +1,32 @@
 package org.koreait.Controller;
 
+import org.koreait.container.Container;
 import org.koreait.dto.Article;
 import org.koreait.service.ArticleService;
 import org.koreait.util.DButil;
 import org.koreait.util.SecSql;
-
-import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+
+import static org.koreait.container.Container.conn;
+import static org.koreait.container.Container.sc;
+
 
 public class ArticleController {
-    Scanner sc;
-    Connection conn;
+
     private ArticleService articleService;
-    public ArticleController(Scanner sc, Connection conn) {
-        this.sc = sc;
-        this.conn = conn;
-        this.articleService = new ArticleService(conn);
+
+    public ArticleController() {
+        this.articleService = Container.articleService;
     }
 
 
     public void dowrite() {
         System.out.println("==글쓰기==");
         System.out.print("제목 : ");
-        String title = sc.nextLine();
+        String title = Container.sc.nextLine();
         System.out.print("내용 : ");
-        String body = sc.nextLine();
+        String body = Container.sc.nextLine();
 
         int id = articleService.dowrite(title,body);
 
@@ -70,9 +70,9 @@ public class ArticleController {
         }
         System.out.println("==수정==");
         System.out.print("새 제목 : ");
-        String title = sc.nextLine().trim();
+        String title = Container.sc.nextLine().trim();
         System.out.print("새 내용 : ");
-        String body = sc.nextLine().trim();
+        String body = Container.sc.nextLine().trim();
 
        articleService.doupdate(id , title , body);
 
